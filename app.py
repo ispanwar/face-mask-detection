@@ -22,52 +22,53 @@ def predict_mask(img):
     else:
         return "No Mask Detected", "red"
 
-def capture_image_from_webcam(model):
-    st.title("Click a Picture to Detect Mask or No Mask")
+# def capture_image_from_webcam(model):
+#     st.title("Click a Picture to Detect Mask or No Mask")
     
-    # Open the webcam
-    cap = cv2.VideoCapture(0)
+#     # Open the webcam
+#     cap = cv2.VideoCapture(0)
     
-    # Show a button to capture an image
-    if st.button("Capture Image"):
-        ret, frame = cap.read()
-        if ret:
-            # Convert the captured frame to RGB
-            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#     # Show a button to capture an image
+#     if st.button("Capture Image"):
+#         ret, frame = cap.read()
+#         if ret:
+#             # Convert the captured frame to RGB
+#             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             
-            # Show the captured image to the user (smaller size)
-            st.image(frame_rgb, channels="RGB", width=300)
+#             # Show the captured image to the user (smaller size)
+#             st.image(frame_rgb, channels="RGB", width=300)
             
-            # Convert to PIL Image for prediction
-            img = Image.fromarray(frame_rgb)
+#             # Convert to PIL Image for prediction
+#             img = Image.fromarray(frame_rgb)
 
-            # Predict using the model
-            label, color = predict_mask(img)
+#             # Predict using the model
+#             label, color = predict_mask(img)
             
-            # Display prediction with colored text
-            st.markdown(f"<h3 style='color:{color};'>{label}</h3>", unsafe_allow_html=True)
+#             # Display prediction with colored text
+#             st.markdown(f"<h3 style='color:{color};'>{label}</h3>", unsafe_allow_html=True)
         
-        # Release the webcam after capturing the image
-        cap.release()
-        cv2.destroyAllWindows()
+#         # Release the webcam after capturing the image
+#         cap.release()
+#         cv2.destroyAllWindows()
 
 
 
 st.title("😷Face Mask Detection App")
-option = st.radio("Choose an Option",("Upload Image","Use Webcam"))
-if option == "Upload Image":
-    st.subheader("Upload an Image to detect Mask or No Mask")
-    uploaded_file = st.file_uploader("Choose an image.....",type=["jpg","jpeg","png"])
+# option = st.radio("Choose an Option",("Upload Image","Use Webcam"))
+# if option == "Upload Image":
     
-    if uploaded_file is not None:
-        img = Image.open(uploaded_file)
-        st.image(img, caption="Uploaded Image", use_container_width=False, width=300)
-        label,color = predict_mask(img)
-        if label == "Mask Detected":
-            st.success(label, icon="✅")
-        else:
-            st.error(label, icon="❌")
         
-elif option == "Use Webcam":
-    capture_image_from_webcam(model=model)
+# elif option == "Use Webcam":
+#     capture_image_from_webcam(model=model)
         
+st.subheader("Upload an Image to detect Mask or No Mask")
+uploaded_file = st.file_uploader("Choose an image.....",type=["jpg","jpeg","png","webp"])
+    
+if uploaded_file is not None:
+    img = Image.open(uploaded_file)
+    st.image(img, caption="Uploaded Image", use_container_width=False, width=300)
+    label,color = predict_mask(img)
+    if label == "Mask Detected":
+        st.success(label, icon="✅")
+    else:
+        st.error(label, icon="❌")
